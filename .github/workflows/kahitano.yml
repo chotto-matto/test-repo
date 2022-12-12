@@ -1,0 +1,30 @@
+name: Android CI
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.8.0
+        with:
+          java-version: 11
+          distribution: 'temurin'
+
+      - name: Unit Test
+        run: bash ./gradlew testDebugUnitTest --stacktrace
+
+      - name: Android Test Report
+        uses: asadmansr/android-test-report-action@v1.2.0
+        if: ${{ always() }}
+
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1051782324452335687/WoUbNdtvovmOK9yfk2flNq1J2GKFuys59mPlL0tbcc_pGFP3aqkV4yMQjHH_o__u-B6q"
+        uses: Ilshidur/action-discord@master
+        with:
+          args: "@everyone --Failed Unit ${{ build/test-results/test/ }}"
