@@ -25,9 +25,7 @@ jobs:
       - run: npm install
       - run: npm test
       - name: Discord Notification
-        if: failure()
-        uses: sebastianpopp/discord-action@v1.0
-        env:
-          DISCORD_WEBHOOK_URL: "https://discord.com/api/webhooks/1051782324452335687/WoUbNdtvovmOK9yfk2flNq1J2GKFuys59mPlL0tbcc_pGFP3aqkV4yMQjHH_o__u-B6q"
+        uses: fateyan/action-discord-notifier@v1.2.0
         with:
+          DISCORD_WEBHOOK_URL: "https://discord.com/api/webhooks/1051782324452335687/WoUbNdtvovmOK9yfk2flNq1J2GKFuys59mPlL0tbcc_pGFP3aqkV4yMQjHH_o__u-B6q"
           content: Tests failed on branch ${{ github.ref }}
