@@ -22,8 +22,9 @@ jobs:
         uses: asadmansr/android-test-report-action@v1.2.0
         if: ${{ always() }}
 
-      - name: Discord Notification
-        uses: fateyan/action-discord-notifier@v1.2.0
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1051782324452335687/WoUbNdtvovmOK9yfk2flNq1J2GKFuys59mPlL0tbcc_pGFP3aqkV4yMQjHH_o__u-B6q"
+        uses: Ilshidur/action-discord@master
         with:
-          webhook: "https://discord.com/api/webhooks/1051782324452335687/WoUbNdtvovmOK9yfk2flNq1J2GKFuys59mPlL0tbcc_pGFP3aqkV4yMQjHH_o__u-B6q"
-          content: Tests failed on branch ${{ github.ref }}
+          args: "@everyone test"
