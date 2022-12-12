@@ -55,7 +55,7 @@ class KahitAno {
                 errorMsg += missingFunction + " "
             }
 
-            println(errorMsg)
+            fail(errorMsg)
         }
 
     }
