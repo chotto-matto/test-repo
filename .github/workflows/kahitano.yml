@@ -23,6 +23,7 @@ jobs:
         if: ${{ always() }}
 
       - name: Discord notification
+        if: ${{ failure() }}
         env:
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1051782324452335687/WoUbNdtvovmOK9yfk2flNq1J2GKFuys59mPlL0tbcc_pGFP3aqkV4yMQjHH_o__u-B6q"
         uses: Ilshidur/action-discord@master
