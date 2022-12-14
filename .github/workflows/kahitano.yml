@@ -21,7 +21,7 @@ jobs:
       - name: Android Test Report
         id: test
         uses: asadmansr/android-test-report-action@v1.2.0
-        if: ${{ always() }}
+        if: ${{ failure() }}
 
       - name: Discord notification
         if: ${{ failure() }}
