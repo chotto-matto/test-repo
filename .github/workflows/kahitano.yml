@@ -34,21 +34,57 @@ jobs:
 #           name: error-report
 #           path: logcat.txt
 
-      - name: Discord notification
-        if: always()
-        env:
-          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
-        uses: Ilshidur/action-discord@master
+      - name: Instrumentation Tests
+        uses: reactivecircus/android-emulator-runner@v2
         with:
-          args: "@everyone -test message-"
+          api-level: 29
+          script: bash ./gradlew testDebugUnitTest --stacktrace
+        continue-on-error: true # IMPORTANT: allow pipeline to continue to Android Test Report step
+        
+      - name: Upload Test Reports Folder
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }} # IMPORTANT: Upload reports regardless of status
+        with:
+          name: reports
+          path: app/build/reports/androidTests/connected/ # path to where the xml test results are stored
 
-      - name: Send file to discord channel
-        if: always()
-        uses: sinshutu/upload-to-discord@master
-        env:
-          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
+  ##5
+  report:
+    runs-on: [ ubuntu-latest ]
+    needs: test # The report job will run after test job
+    if: ${{ always() }} # IMPORTANT: Execute report job regardless of status
+    steps:
+      - name: Download Test Reports Folder
+        uses: actions/download-artifact@v2
         with:
-          args: ./binary/results.bin
+          name: reports
+      - name: Android  Report Action
+        uses: doanpt/AndroidTestReportAction@v1.1
+        if: ${{ always() }} # IMPORTANT: run Android Test Report regardless
+
+
+
+
+#       - name: Discord notification
+#         if: always()
+#         env:
+#           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
+#         uses: Ilshidur/action-discord@master
+#         with:
+#           args: "@everyone "
+
+#       - name: Send file to discord channel
+#         if: always()
+#         uses: sinshutu/upload-to-discord@master
+#         env:
+#           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
+#         with:
+#           args: ./app/results.bin
+
+
+
+
+
 #       - uses: android-actions/setup-android@v2
           
 #       - name: Start Server
