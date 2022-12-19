@@ -17,12 +17,15 @@ jobs:
           
       - name: Build and test
         run: |
-          bash ./gradlew build connectedCheck
+          bash ./gradlew testDebugUnitTest --stacktrace
           
       - name: Capture error report
+        if: always()
         run: |
           adb logcat -d > logcat.txt
+          
       - name: Upload error report
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: error-report
