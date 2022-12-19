@@ -18,10 +18,16 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
           
+      - name: Start emulator
+        run: emulator -avd test_device -no-window -no-audio
+        
+      - name: Wait for emulator to start
+        run: adb wait-for-device
+        
       - name: Build and test
         run: |
           bash ./gradlew testDebugUnitTest --stacktrace
-          
+        
       - name: Capture error report
         if: always()
         run: |
