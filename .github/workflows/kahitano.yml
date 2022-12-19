@@ -44,7 +44,7 @@ jobs:
       - uses: android-actions/setup-android@v2
           
       - name: Start emulator
-        run: adb start-server && adb start-emulator
+        run: adb start-server && adb -avd Nexus_5X_API_29
         
       - name: Run tests
         run: bash ./gradlew test
