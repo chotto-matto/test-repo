@@ -41,19 +41,16 @@ jobs:
 #           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1052426287752417360/WqmrTGJG-cErMv6FF_BqBfAJF_-eVi1CWkmMbL8sY28gVB8UcnKaTA_uzYeiKKLbnKy6"
 #         with:
 #           args: logcat.txt
-      - uses: actions/checkout@v1
-
-      # Download & install the Android SDK.
-      - uses: malinskiy/action-android/install-sdk@release/0.1.3
-
-      # Set up platform tools like adb.
-      - run: sdkmanager platform-tools
-
-      # Start ADB (and verify that pathing is working correctly).
-      - run: adb devices
-
-      # Verify $ANDROID_HOME is properly set for later Gradle commands.
-      - run: echo $ANDROID_HOME
+      - uses: actions/setup-adb@v1
+        with:
+      # Set the Android SDK API level that you want to use
+          api-level: 29
+          
+      - name: Start emulator
+        run: adb start-server && adb start-emulator
+        
+      - name: Run tests
+        run: bash ./gradlew test
           
           
           
