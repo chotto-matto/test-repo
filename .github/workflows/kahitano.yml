@@ -19,14 +19,17 @@ jobs:
         uses: android-actions/setup-android@v2
           
       - name: Start emulator
-        uses: vgaidarji/android-github-actions-emulator@v1.0.1
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          script: bash ./gradlew testDebugUnitTest --stacktrace
         
       - name: Wait for emulator to start
         run: adb wait-for-device
         
-      - name: Build and test
-        run: |
-          bash ./gradlew testDebugUnitTest --stacktrace
+#       - name: Build and test
+#         run: |
+#           bash ./gradlew testDebugUnitTest --stacktrace
         
       - name: Capture error report
         if: always()
