@@ -21,7 +21,7 @@ jobs:
       - name: Start emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 33
+          api-level: 29
           script: bash ./gradlew testDebugUnitTest --stacktrace
         
       - name: Wait for emulator to start
