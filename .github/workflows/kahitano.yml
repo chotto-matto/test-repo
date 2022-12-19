@@ -43,11 +43,8 @@ jobs:
 #           args: logcat.txt
       - uses: android-actions/setup-android@v2
           
-      - name: Start emulator
-        run: adb start-server && adb Nexus_5X_API_29 avd
-        
-      - name: Run tests
-        run: bash ./gradlew test
+      - name: Start Server
+        run: adb devices -l
           
           
           
