@@ -48,7 +48,7 @@ jobs:
         env:
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
         with:
-          args: ./app/results.bin
+          args: ./binary/results.bin
 #       - uses: android-actions/setup-android@v2
           
 #       - name: Start Server
