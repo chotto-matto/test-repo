@@ -37,7 +37,7 @@ jobs:
       - name: Discord notification
         if: always()
         env:
-          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1052426287752417360/WqmrTGJG-cErMv6FF_BqBfAJF_-eVi1CWkmMbL8sY28gVB8UcnKaTA_uzYeiKKLbnKy6"
+          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
         uses: Ilshidur/action-discord@master
         with:
           args: "@everyone -test message-"
