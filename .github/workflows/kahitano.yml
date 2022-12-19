@@ -22,7 +22,7 @@ jobs:
       - name: Capture error report
         if: always()
         run: |
-          adb logcat -d > logcat.txt
+          adb bugreport > logcat.txt
           
       - name: Upload error report
         if: always()
@@ -31,7 +31,8 @@ jobs:
           name: error-report
           path: logcat.txt
 
-      - name: Send file README.md to discord channel
+      - name: Send file to discord channel
+        if: always()
         uses: sinshutu/upload-to-discord@master
         env:
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1052426287752417360/WqmrTGJG-cErMv6FF_BqBfAJF_-eVi1CWkmMbL8sY28gVB8UcnKaTA_uzYeiKKLbnKy6"
