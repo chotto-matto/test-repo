@@ -17,7 +17,7 @@ jobs:
           
       - name: Build and test
         run: |
-          ./gradlew build connectedCheck
+          bash ./gradlew build connectedCheck
           
       - name: Capture error report
         run: |
