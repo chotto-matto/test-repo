@@ -15,6 +15,9 @@ jobs:
           java-version: 11
           distribution: 'temurin'
           
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+          
       - name: Build and test
         run: |
           bash ./gradlew testDebugUnitTest --stacktrace
@@ -22,7 +25,7 @@ jobs:
       - name: Capture error report
         if: always()
         run: |
-          ./adb bugreport > logcat.txt
+          adb bugreport > logcat.txt
           
       - name: Upload error report
         if: always()
