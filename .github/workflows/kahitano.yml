@@ -34,13 +34,21 @@ jobs:
 #           name: error-report
 #           path: logcat.txt
 
+      - name: Discord notification
+        if: ${{ failure() }}
+        env:
+          DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1052426287752417360/WqmrTGJG-cErMv6FF_BqBfAJF_-eVi1CWkmMbL8sY28gVB8UcnKaTA_uzYeiKKLbnKy6"
+        uses: Ilshidur/action-discord@master
+        with:
+          args: "@everyone -test message-"
+
       - name: Send file to discord channel
         if: always()
         uses: sinshutu/upload-to-discord@master
         env:
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
         with:
-          args: "@everyone *Failed Unit ${{./app/results.bin}} *"
+          args: ./app/results.bin
 #       - uses: android-actions/setup-android@v2
           
 #       - name: Start Server
