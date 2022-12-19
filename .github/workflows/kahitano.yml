@@ -35,7 +35,7 @@ jobs:
 #           path: logcat.txt
 
       - name: Discord notification
-        if: ${{ failure() }}
+        if: always()
         env:
           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1052426287752417360/WqmrTGJG-cErMv6FF_BqBfAJF_-eVi1CWkmMbL8sY28gVB8UcnKaTA_uzYeiKKLbnKy6"
         uses: Ilshidur/action-discord@master
