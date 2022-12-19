@@ -22,7 +22,7 @@ jobs:
       - name: Capture error report
         if: always()
         run: |
-          adb bugreport > logcat.txt
+          ./adb bugreport > logcat.txt
           
       - name: Upload error report
         if: always()
