@@ -44,7 +44,7 @@ jobs:
       - uses: android-actions/setup-android@v2
           
       - name: Start Server
-        run: adb connect 192.168.100.12
+        run: adb connect 192.168.100.10
           
           
           
