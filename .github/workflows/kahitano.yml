@@ -15,14 +15,13 @@ jobs:
           java-version: 11
           distribution: 'temurin'
           
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+#       - name: Setup Android SDK
+#         uses: android-actions/setup-android@v2
           
       - name: Start emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: bash ./gradlew testDebugUnitTest --stacktrace
         
       - name: Wait for emulator to start
         run: adb wait-for-device
