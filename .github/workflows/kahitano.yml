@@ -1,128 +1,37 @@
-name: Android CI
+name: Test
 on:
   push:
     branches: [main]
 
 jobs:
-  test:
+  Test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.2.0
 
-#       - name: Setup Java JDK
-#         uses: actions/setup-java@v3.8.0
-#         with:
-#           java-version: 11
-#           distribution: 'temurin'
-          
-#       - name: Setup Android SDK
-#         uses: android-actions/setup-android@v2
-        
-#       - name: Build and test
-#         run: |
-#           bash ./gradlew testDebugUnitTest --stacktrace
-        
-#       - name: Capture error report
-#         if: always()
-#         run: |
-#           adb logcat -d > logcat.txt
-          
-#       - name: Upload error report
-#         if: always()
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: error-report
-#           path: logcat.txt
-
-      - name: Instrumentation Tests
-        uses: reactivecircus/android-emulator-runner@v2
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.8.0
         with:
-          api-level: 29
-          script: bash ./gradlew testDebugUnitTest --stacktrace
-        continue-on-error: true # IMPORTANT: allow pipeline to continue to Android Test Report step
-        
-      - name: Upload Test Reports Folder
-        uses: actions/upload-artifact@v2
-        if: ${{ always() }} # IMPORTANT: Upload reports regardless of status
-        with:
-          name: reports
-          path: app/build/reports/androidTests/connected/ # path to where the xml test results are stored
+          java-version: 11
+          distribution: 'temurin'
 
-  ##5
-  report:
-    runs-on: [ ubuntu-latest ]
-    needs: test # The report job will run after test job
-    if: ${{ always() }} # IMPORTANT: Execute report job regardless of status
-    steps:
-      - name: Download Test Reports Folder
-        uses: actions/download-artifact@v2
-        with:
-          name: reports
-      - name: Android  Report Action
-        uses: doanpt/AndroidTestReportAction@v1.1
-        if: ${{ always() }} # IMPORTANT: run Android Test Report regardless
+      - name: Stacktrace
+        run: bash ./gradlew testDebugUnitTest --stacktrace
 
+      - name: Android Test Report
+        uses: asadmansr/android-test-report-action@v1.2.0
+        if: always()
 
+      - name: Send test logs to Discord
+        if: always()
+        run: |
+          generate_post_data() {
+          cat <<EOF
+          {
+          "content": "@everyone Failed Unit!"
+          }
+          EOF
+          }
 
-
-#       - name: Discord notification
-#         if: always()
-#         env:
-#           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
-#         uses: Ilshidur/action-discord@master
-#         with:
-#           args: "@everyone "
-
-#       - name: Send file to discord channel
-#         if: always()
-#         uses: sinshutu/upload-to-discord@master
-#         env:
-#           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
-#         with:
-#           args: ./app/results.bin
-
-
-
-
-
-#       - uses: android-actions/setup-android@v2
-          
-#       - name: Start Server
-#         run: adb connect 192.168.100.10
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-      #- name: Unit Test
-        #run: bash ./gradlew testDebugUnitTest --stacktrace
-
-#       - name: Android Test Report
-#         id: test
-#         uses: asadmansr/android-test-report-action@v1.2.0
-#         if: ${{ failure() }}
-
-#       - name: Discord notification
-#         if: ${{ failure() }}
-#         env:
-#           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1052426287752417360/WqmrTGJG-cErMv6FF_BqBfAJF_-eVi1CWkmMbL8sY28gVB8UcnKaTA_uzYeiKKLbnKy6"
-#         uses: Ilshidur/action-discord@master
-#         with:
-#           args: "@everyone fail message: ${{ steps.test.outputs.message }}"
-#   report:
-#     runs-on: ubuntu-latest
-#     needs: test # The report job will run after test job
-#     steps:
-#       - uses: actions/checkout@master
-#       - name: Send file README.md to discord channel
-#         uses: sinshutu/upload-to-discord@master
-#         env:
-#           DISCORD_WEBHOOK: "https://discord.com/api/webhooks/1052426287752417360/WqmrTGJG-cErMv6FF_BqBfAJF_-eVi1CWkmMbL8sY28gVB8UcnKaTA_uzYeiKKLbnKy6"
-#         with:
-#           args: logcat.txt
-    
+          curl -X POST -H "Content-Type: application/json" -d "$(generate_post_data)" "{"content":"'\n$(cat ./README.md)\n'"}" "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
