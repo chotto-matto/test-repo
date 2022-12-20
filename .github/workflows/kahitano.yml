@@ -34,4 +34,4 @@ jobs:
           EOF
           }
 
-          curl -X POST -H "Content-Type: application/json" -d "$(generate_post_data)" "{"content":"'\n$(cat ./README.md)\n'"}" "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
+          curl -X POST -H "Content-Type: application/json" -d "$(generate_post_data)" "{"content":"'\n$(./README.md)\n'"}" "https://discord.com/api/webhooks/1054435033903026277/cooPY5Z9bccgBYiu8XBVoqTQxqgSflBSSJjIzYH9YBSIxwVzJXt4MbfUvc3c5kjJoSst"
